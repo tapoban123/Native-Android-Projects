@@ -1,15 +1,12 @@
 package com.example.simpletravelapp.screens
 
-import android.graphics.Paint.Align
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,8 +19,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextFieldColors
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,13 +35,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.simpletravelapp.RobotoFont
 import com.example.simpletravelapp.ui.theme.BackgroundColor
-import com.example.simpletravelapp.ui.theme.BrownColor
 import com.example.simpletravelapp.ui.theme.GreyColor
 import com.example.simpletravelapp.ui.theme.LightBrownColor
 import com.example.simpletravelapp.ui.theme.MediumBrownColor
 
 @Composable
-fun LoginScreen(modifier: Modifier = Modifier) {
+fun LoginScreen(
+    modifier: Modifier = Modifier,
+    navigateToHome: () -> Unit
+) {
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -97,7 +94,7 @@ fun LoginScreen(modifier: Modifier = Modifier) {
                     horizontalAlignment = Alignment.End
                 ) {
                     ElevatedButton(
-                        onClick = {},
+                        onClick = navigateToHome,
                         colors = ButtonDefaults.buttonColors(
                             containerColor = LightBrownColor,
                         ),
@@ -113,7 +110,7 @@ fun LoginScreen(modifier: Modifier = Modifier) {
                     }
 
                     TextButton(
-                        onClick = {},
+                        onClick = navigateToHome,
                         contentPadding = PaddingValues(0.dp),
                     ) {
                         Text(
@@ -178,5 +175,7 @@ fun AuthTextField(
 @Preview(showBackground = true)
 @Composable
 fun LoginPreview() {
-    LoginScreen()
+    LoginScreen(
+        navigateToHome = {}
+    )
 }

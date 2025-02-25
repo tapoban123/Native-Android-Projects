@@ -12,8 +12,15 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navOptions
+import com.example.simpletravelapp.screens.HomeScreen
+import com.example.simpletravelapp.screens.LoginScreen
 import com.example.simpletravelapp.screens.SplashScreen
 import com.example.simpletravelapp.ui.theme.SimpleTravelAppTheme
+import kotlinx.serialization.Serializable
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,14 +32,55 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    SplashScreen(navigateScreen =  {})
+                    // Declared NavigationController
+                    val navController = rememberNavController()
+
+                    // Declared NavHost
+                    NavHost(navController = navController, startDestination = SplashScreen) {
+                        // Composable for SplashScreen
+                        composable<SplashScreen> {
+                            SplashScreen(navigateScreen = {
+                                navController.navigate(LoginScreen)
+                            })
+                        }
+
+                        // Composable for LoginScreen
+                        composable<LoginScreen> {
+                            LoginScreen(
+                                navigateToHome = {
+                                    navController.navigate(HomeScreen,
+                                        // Pops all other routes that does not match
+                                        // with the specified route, i.e, HomeScreen.
+                                        navOptions = navOptions {
+                                            popUpTo<HomeScreen>()
+                                        })
+                                }
+                            )
+                        }
+
+                        // Composable for HomeScreen
+                        composable<HomeScreen> {
+                            HomeScreen()
+                        }
+
+                    }
                 }
             }
         }
     }
 }
 
+// Serializable Routes
+@Serializable
+object SplashScreen
 
+@Serializable
+object LoginScreen
+
+@Serializable
+object HomeScreen
+
+// My Custom Font
 val RobotoFont = FontFamily(
     Font(R.font.roboto_mediumitalic, style = FontStyle.Italic),
     Font(R.font.roboto_semibold, FontWeight.Bold, style = FontStyle.Normal),
