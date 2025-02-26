@@ -82,23 +82,23 @@ object HomeScreen
 
 // My Custom Font
 val RobotoFont = FontFamily(
-    Font(R.font.roboto_mediumitalic, style = FontStyle.Italic),
-    Font(R.font.roboto_semibold, FontWeight.Bold, style = FontStyle.Normal),
-    Font(R.font.roboto_medium, style = FontStyle.Normal),
-    Font(R.font.roboto_semibolditalic, FontWeight.Bold, style = FontStyle.Italic),
+    Font(R.font.roboto_mediumitalic, FontWeight.Medium, style = FontStyle.Italic),
+    Font(R.font.roboto_semibold, FontWeight.SemiBold, style = FontStyle.Normal),
+    Font(R.font.roboto_medium, FontWeight.Medium, style = FontStyle.Normal),
+    Font(R.font.roboto_semibolditalic, FontWeight.SemiBold, style = FontStyle.Italic),
     Font(R.font.roboto_bolditalic, FontWeight.Bold, style = FontStyle.Italic),
-    Font(R.font.roboto_light, style = FontStyle.Normal),
+    Font(R.font.roboto_light, FontWeight.Light, style = FontStyle.Normal),
     Font(R.font.roboto_thinitalic, FontWeight.Thin, style = FontStyle.Italic),
-    Font(R.font.roboto_lightitalic, style = FontStyle.Italic),
+    Font(R.font.roboto_lightitalic, FontWeight.Light, style = FontStyle.Italic),
     Font(R.font.roboto_extralight, FontWeight.ExtraLight, style = FontStyle.Normal),
     Font(R.font.roboto_bold, FontWeight.Bold, style = FontStyle.Normal),
-    Font(R.font.roboto_blackitalic, style = FontStyle.Italic),
+    Font(R.font.roboto_blackitalic, FontWeight.Normal, style = FontStyle.Italic),
     Font(R.font.roboto_thin, FontWeight.Thin, style = FontStyle.Normal),
     Font(R.font.roboto_extrabold, FontWeight.ExtraBold, style = FontStyle.Normal),
     Font(R.font.roboto_extrabolditalic, FontWeight.ExtraBold, style = FontStyle.Italic),
-    Font(R.font.roboto_black, style = FontStyle.Normal),
-    Font(R.font.roboto_regular, style = FontStyle.Normal),
-    Font(R.font.roboto_italic, style = FontStyle.Italic),
+    Font(R.font.roboto_black, FontWeight.Normal, style = FontStyle.Normal),
+    Font(R.font.roboto_regular, FontWeight.Normal, style = FontStyle.Normal),
+    Font(R.font.roboto_italic, FontWeight.Normal, style = FontStyle.Italic),
     Font(R.font.roboto_extralightitalic, FontWeight.ExtraLight, style = FontStyle.Italic),
 )
 
