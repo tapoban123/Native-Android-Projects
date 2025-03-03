@@ -6,16 +6,23 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -45,6 +52,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.simpletravelapp.R
 import com.example.simpletravelapp.RobotoFont
+import com.example.simpletravelapp.data.climbingToolData
 import com.example.simpletravelapp.data.mountainsData
 import com.example.simpletravelapp.models.MountainDataModel
 import com.example.simpletravelapp.ui.theme.BackgroundColor
@@ -56,7 +64,10 @@ fun HomeScreen() {
             .fillMaxSize()
             .background(color = BackgroundColor)
             .padding(horizontal = 30.dp)
-            .padding(top = 30.dp),
+            .padding(
+                top = 30.dp,
+                bottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding(),
+            ),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.Start,
     ) {
@@ -122,8 +133,46 @@ fun HomeScreen() {
             )
         }
 
-    }
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            modifier = Modifier.padding(10.dp)
+        ) {
+            items(climbingToolData.size) { it ->
+                Card(
+                    modifier = Modifier.size(30.dp, 180.dp)
+                ) {
 
+                    val tool = climbingToolData[it]
+                    Box {
+                        Image(
+                            painter = painterResource((tool.imgId)),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                        )
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(color = Color.Black.copy(alpha = 0.55F))
+                                .align(Alignment.BottomCenter)
+                        ) {
+                            Text(
+                                tool.toolName,
+                                fontFamily = RobotoFont,
+                                color = Color.White,
+                                modifier = Modifier
+                                    .align(Alignment.Center)
+                                    .padding(vertical = 5.dp),
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 15.sp,
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 @Composable
@@ -171,7 +220,6 @@ fun SearchTextField() {
             imageId = R.drawable.search_logo,
         )
     }
-
 }
 
 @Composable
@@ -182,6 +230,7 @@ fun CustomImage(
     height: Dp? = null,
 ) {
     val image = painterResource(imageId)
+
     Image(
         painter = image,
         contentDescription = null,
@@ -195,70 +244,84 @@ fun CustomImage(
 
 @Composable
 fun PopularMountainsRow() {
+    val lazyListState = rememberLazyListState()
+    val items = remember { mountainsData }
     LazyRow(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxWidth(),
+        contentPadding = PaddingValues(horizontal = 5.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        state = lazyListState,
     ) {
-        itemsIndexed(
-            items = mountainsData,
-            itemContent = { index: Int,
-                            item: MountainDataModel ->
-                Card(modifier = Modifier.padding(end = 10.dp)) {
-                    Box {
-                        CustomImage(
-                            item.imageId,
-                            contentScale = ContentScale.FillBounds,
-                            width = 123.dp,
-                            height = 155.dp
+        items(
+            items.size,
+            key = { index -> index },
+        ) {
+            index->
+            Card() {
+                val item = items[index]
+                Box {
+                    CustomImage(
+                        item.imageId,
+                        contentScale = ContentScale.FillBounds,
+                        width = 123.dp,
+                        height = 155.dp
+                    )
+                    Column(
+                        modifier = Modifier
+                            .align(Alignment.BottomStart)
+                            .padding(start = 10.dp, bottom = 10.dp),
+                        verticalArrangement = Arrangement.Top,
+                    ) {
+                        val difficultyText: String = item.difficulty
+
+                        val difficultyColor: Color = when (difficultyText) {
+                            ("Hard") -> Color.Red
+                            ("Medium") -> Color.Yellow
+                            else -> Color.Blue
+                        }
+
+                        Text(
+                            text = item.place,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Normal,
+                            fontFamily = RobotoFont,
+                            color = Color.White,
                         )
-                        Column(
-                            modifier = Modifier
-                                .align(Alignment.BottomStart)
-                                .padding(start = 10.dp, bottom = 10.dp),
-                            verticalArrangement = Arrangement.Top,
-                        ) {
-                            val difficultyText: String = item.difficulty
-
-                            val difficultyColor: Color = when (difficultyText) {
-                                ("Hard") -> Color.Red
-                                ("Medium") -> Color.Yellow
-                                else -> Color.Blue
-                            }
-
+                        Text(
+                            text = item.country,
+                            fontSize = 10.sp,
+                            fontFamily = RobotoFont,
+                            color = Color.White.copy(alpha = 0.66F),
+                        )
+                        Row {
                             Text(
-                                text = item.place,
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.Normal,
-                                fontFamily = RobotoFont,
+                                text = "Difficulty ",
+                                fontSize = 9.sp,
                                 color = Color.White,
+                                fontWeight = FontWeight.SemiBold,
+                                fontFamily = RobotoFont,
                             )
                             Text(
-                                text = item.country,
-                                fontSize = 10.sp,
+                                text = difficultyText,
+                                color = difficultyColor,
+                                fontSize = 9.sp,
+                                fontWeight = FontWeight.Bold,
                                 fontFamily = RobotoFont,
-                                color = Color.White.copy(alpha = 0.66F),
                             )
-                            Row {
-                                Text(
-                                    text = "Difficulty ",
-                                    fontSize = 9.sp,
-                                    color = Color.White,
-                                    fontWeight = FontWeight.SemiBold,
-                                    fontFamily = RobotoFont,
-                                )
-                                Text(
-                                    text = difficultyText,
-                                    color = difficultyColor,
-                                    fontSize = 9.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    fontFamily = RobotoFont,
-                                )
-                            }
                         }
                     }
                 }
             }
-        )
+        }
+//        itemsIndexed(
+//            items = items,
+//            key = { index, item -> index },
+//            itemContent = { index: Int,
+//                            item: MountainDataModel ->
+//
+//            }
+//        )
     }
 }
 

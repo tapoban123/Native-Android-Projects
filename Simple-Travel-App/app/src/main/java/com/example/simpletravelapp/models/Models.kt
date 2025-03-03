@@ -6,3 +6,8 @@ data class MountainDataModel(
     val country: String,
     val difficulty: String,
 )
+
+data class ClimbingToolDataModel(
+    val imgId: Int,
+    val toolName: String,
+)
